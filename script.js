@@ -166,9 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cells[player2Position].appendChild(player2Icon);
   }
 
-  const rollDieButton = document.getElementById('roll-die-button');
+  // The global rollDieButton is already assigned by line 143:
+  // rollDieButton = document.getElementById('roll-die-button');
+  // So, we use that variable directly here.
+  // The const rollDieButton = ... line that was here previously has been removed.
 
-  if (rollDieButton) {
+  if (rollDieButton) { // This now correctly refers to the global rollDieButton, assigned on line 143.
     rollDieButton.addEventListener('click', () => {
       const roll = rollDie();
       // const currentPositionBeforeMove = currentPlayer === 1 ? player1Position : player2Position; // Not strictly needed now
