@@ -1,0 +1,67 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center children horizontally */
+  margin: 0;
+  padding-top: 20px; /* Add some space at the top */
+  background-color: #f0f0f0; /* Light grey background for the page */
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(10, 50px); /* 10 columns, each 50px wide */
+  grid-template-rows: repeat(10, 50px);    /* 10 rows, each 50px high */
+  width: 500px; /* 10 * 50px */
+  height: 500px; /* 10 * 50px */
+  border: 1px solid black; /* Border for the game board itself */
+  margin-bottom: 20px; /* Space below the board */
+}
+
+#game-board > div {
+  border: 1px solid #ccc; /* Light grey border for each cell */
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box; /* So border doesn't add to the size */
+  display: flex; /* For centering content if any */
+  align-items: center;
+  justify-content: center;
+  font-size: 10px; /* In case we want to put numbers or text */
+}
+
+.player1 {
+  background-color: lightblue;
+}
+
+.player2 {
+  background-color: lightcoral;
+}
+
+#player-info {
+  border: 2px solid #333;
+  padding: 15px;
+  width: 400px; /* Or a max-width and margin auto if not in flex */
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px; /* Space below player info */
+}
+
+#roll-die-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff; /* Bootstrap primary blue */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#roll-die-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
