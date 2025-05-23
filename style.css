@@ -1,67 +1,336 @@
+:root {
+  --main-bg-color: #222;
+  --main-text-color: #eee;
+  --container-bg-color: #333;
+  --container-border-color: #555;
+  --button-bg-color: #5C6BC0; /* Indigo */
+  --button-hover-bg-color: #3F51B5; /* Darker Indigo */
+  --button-text-color: #fff;
+  --link-color: #81D4FA; /* Light Blue */
+  --game-board-bg: #424242; /* Darker grey for board area */
+  --game-board-border-color: #666; /* Border for game board visual guide */
+  --player-info-bg: var(--container-bg-color);
+  --event-log-bg: var(--container-bg-color);
+  --tile-default-border: #757575;
+  --start-tile-border: gold;
+  --heading-color: var(--main-text-color);
+  --toggle-button-bg: var(--container-bg-color);
+  --toggle-button-border: var(--container-border-color);
+}
+
+body.light-mode {
+  --main-bg-color: #f4f4f4;
+  --main-text-color: #333;
+  --container-bg-color: #fff;
+  --container-border-color: #ccc;
+  --button-bg-color: #7986CB; /* Lighter Indigo */
+  --button-hover-bg-color: #5C6BC0; /* Indigo for hover in light mode */
+  --button-text-color: #fff;
+  --link-color: #0288D1; /* Darker Blue */
+  --game-board-bg: #e0e0e0; /* Lighter grey for board area */
+  --game-board-border-color: #bdbdbd;
+  --player-info-bg: var(--container-bg-color);
+  --event-log-bg: var(--container-bg-color);
+  --tile-default-border: #999;
+  --start-tile-border: darkgoldenrod;
+  --heading-color: var(--main-text-color);
+  --toggle-button-bg: #eee; /* Lighter background for toggle button in light mode */
+  --toggle-button-border: #ccc;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center children horizontally */
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   margin: 0;
-  padding-top: 20px; /* Add some space at the top */
-  background-color: #f0f0f0; /* Light grey background for the page */
+  padding: 20px; /* Add some padding to the body */
+  /* background-color: #f0f0f0; /* Replaced by var(--main-bg-color) */
+  display: flex; /* Keep flex to center the title and game-container vertically */
+  flex-direction: column;
+  align-items: center; /* Center title and game-container horizontally */
 }
 
 h1 {
   margin-bottom: 20px;
+  text-align: center; /* Ensure heading is centered */
+  color: var(--heading-color);
+}
+
+#game-container {
+  display: flex;
+  justify-content: center; /* Center columns if space available, or use space-around */
+  align-items: flex-start; /* Align columns to the top */
+  gap: 30px; /* Increased gap between columns */
+  width: 95%; /* Use more of the viewport */
+  max-width: 1100px; /* Max width for very large screens, adjusted from 1200 */
+  margin: 0 auto; /* Center #game-container if body is not flex centering it directly */
+}
+
+#left-column {
+  /* flex-basis: 620px; /* Game board is 600px + borders/padding */
+  /* Let it size based on game-board content for now */
+  display: flex; /* To center game-board if needed, though game-board has its own margin auto */
+  justify-content: center;
+}
+
+#right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Gap between items in the right column */
+  flex-basis: 350px; /* Give a base width to the right column */
+  min-width: 300px; /* Ensure it doesn't get too small */
 }
 
 #game-board {
-  display: grid;
-  grid-template-columns: repeat(10, 50px); /* 10 columns, each 50px wide */
-  grid-template-rows: repeat(10, 50px);    /* 10 rows, each 50px high */
-  width: 500px; /* 10 * 50px */
-  height: 500px; /* 10 * 50px */
-  border: 1px solid black; /* Border for the game board itself */
-  margin-bottom: 20px; /* Space below the board */
+  position: relative;
+  width: 600px; /* Diameter for the circular layout */
+  height: 600px; /* Diameter for the circular layout */
+  /* margin: 30px auto; /* Removed as left-column can handle centering/spacing */
+  border-radius: 50%; /* Visual guide for the circular area */
+  border: 2px dashed var(--game-board-border-color); /* Use variable */
+  /* background-color: var(--game-board-bg); /* Optional: if board area itself needs a bg */
 }
 
 #game-board > div {
-  border: 1px solid #ccc; /* Light grey border for each cell */
-  width: 50px;
-  height: 50px;
-  box-sizing: border-box; /* So border doesn't add to the size */
-  display: flex; /* For centering content if any */
+  position: absolute;
+  width: 80px;  /* Tile width */
+  height: 40px; /* Tile height */
+  /* background-color: #f0f0f0; /* Will be overridden by specific tile colors */
+  border: 1px solid var(--tile-default-border); /* Use variable */
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px; /* In case we want to put numbers or text */
+  font-size: 10px; /* Slightly larger font for new tile size */
+  
+  /* Center all tiles initially before applying individual transforms */
+  left: calc(50% - 40px); /* 50% - (tile_width / 2) */
+  top: calc(50% - 20px);  /* 50% - (tile_height / 2) */
+  transform-origin: center center; /* Rotation origin for the tile itself */
+  color: var(--main-text-color); /* Themed text color for tile content (emojis) */
+  /* Tile background colors are set by specific rules below and are not themed */
 }
 
-.player1 {
-  background-color: lightblue;
+/* Tile Background Colors - these are fixed gameplay colors, not themed */
+/* Green Tiles: #8FBC8F */
+#game-board > div:nth-child(1),
+#game-board > div:nth-child(2),
+#game-board > div:nth-child(6),
+#game-board > div:nth-child(7),
+#game-board > div:nth-child(11),
+#game-board > div:nth-child(12),
+#game-board > div:nth-child(16),
+#game-board > div:nth-child(17),
+#game-board > div:nth-child(21),
+#game-board > div:nth-child(22),
+#game-board > div:nth-child(23),
+#game-board > div:nth-child(24) {
+  background-color: #8FBC8F; 
 }
 
-.player2 {
-  background-color: lightcoral;
+/* Orange Tiles: #FFA500 */
+#game-board > div:nth-child(3),
+#game-board > div:nth-child(8),
+#game-board > div:nth-child(13),
+#game-board > div:nth-child(18) {
+  background-color: #FFA500;
 }
+
+/* Purple Tiles: #9370DB */
+#game-board > div:nth-child(4),
+#game-board > div:nth-child(9),
+#game-board > div:nth-child(14),
+#game-board > div:nth-child(19) {
+  background-color: #9370DB;
+}
+
+/* Blue Tiles: #ADD8E6 */
+#game-board > div:nth-child(5),
+#game-board > div:nth-child(10),
+#game-board > div:nth-child(15) {
+  background-color: #ADD8E6;
+}
+
+/* Red Tile: #DC143C */
+#game-board > div:nth-child(20) {
+  background-color: #DC143C;
+}
+
+/* Start Tile Marker */
+#game-board > div:nth-child(1) {
+  border: 3px solid var(--start-tile-border); /* Use variable */
+  /* Ensure other properties like background-color, icon, and transform are not overridden unless intended */
+}
+
+/* Placeholder Icons (Emojis) - Emoji colors are intrinsic, not themed by text color variable */
+#game-board > div::before {
+  color: white;
+  font-size: 18px; /* Adjusted for 40px tile height */
+  /* Centering should be handled by the tile's flex properties */
+}
+
+/* Green Tiles: 🤝 */
+#game-board > div:nth-child(1)::before,
+#game-board > div:nth-child(2)::before,
+#game-board > div:nth-child(6)::before,
+#game-board > div:nth-child(7)::before,
+#game-board > div:nth-child(11)::before,
+#game-board > div:nth-child(12)::before,
+#game-board > div:nth-child(16)::before,
+#game-board > div:nth-child(17)::before,
+#game-board > div:nth-child(21)::before,
+#game-board > div:nth-child(22)::before,
+#game-board > div:nth-child(23)::before,
+#game-board > div:nth-child(24)::before {
+  content: "🤝";
+}
+
+/* Orange Tiles: 👥 */
+#game-board > div:nth-child(3)::before,
+#game-board > div:nth-child(8)::before,
+#game-board > div:nth-child(13)::before,
+#game-board > div:nth-child(18)::before {
+  content: "👥";
+}
+
+/* Purple Tiles: ⚖️ */
+#game-board > div:nth-child(4)::before,
+#game-board > div:nth-child(9)::before,
+#game-board > div:nth-child(14)::before,
+#game-board > div:nth-child(19)::before {
+  content: "⚖️";
+}
+
+/* Blue Tiles: 💰 */
+#game-board > div:nth-child(5)::before,
+#game-board > div:nth-child(10)::before,
+#game-board > div:nth-child(15)::before {
+  content: "💰";
+}
+
+/* Red Tile: 🚩 */
+#game-board > div:nth-child(20)::before {
+  content: "🚩";
+}
+
+
+/* Positioning for 24 tiles in a circle */
+/* Angle per tile: 360 / 24 = 15 degrees */
+/* Radius: 260px (to the center of the tile's height) */
+/* Final rotation: -90deg to make the 80px width tangent */
+
+#game-board > div:nth-child(1) { transform: rotate(0deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(2) { transform: rotate(15deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(3) { transform: rotate(30deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(4) { transform: rotate(45deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(5) { transform: rotate(60deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(6) { transform: rotate(75deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(7) { transform: rotate(90deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(8) { transform: rotate(105deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(9) { transform: rotate(120deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(10) { transform: rotate(135deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(11) { transform: rotate(150deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(12) { transform: rotate(165deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(13) { transform: rotate(180deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(14) { transform: rotate(195deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(15) { transform: rotate(210deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(16) { transform: rotate(225deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(17) { transform: rotate(240deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(18) { transform: rotate(255deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(19) { transform: rotate(270deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(20) { transform: rotate(285deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(21) { transform: rotate(300deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(22) { transform: rotate(315deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(23) { transform: rotate(330deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(24) { transform: rotate(345deg) translateY(-260px) rotate(-90deg); }
+
+
+/* Player Icon Styles */
+.player-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%; /* Ensures circular shape */
+  border: 1px solid #333; /* Dark border for visibility */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; /* Default color for icon text (emojis are often colorized by default) */
+  font-size: 16px; /* Adjust for emoji size */
+  z-index: 10; /* Ensure pawns are above tiles */
+  /* position: absolute; /* Pawns are children of cells, cells are flex containers. No absolute needed here. */
+  /* flex-shrink: 0; /* Removed, as it was for older smaller icons */
+  box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Optional: subtle shadow for depth */
+}
+
+.p1-icon {
+  background-color: #A040C0; /* Vibrant Purple */
+}
+
+.p2-icon {
+  background-color: #4682B4; /* Steel Blue */
+}
+
+/* Remove old cell-based player highlighting */
+/* .player1 and .player2 styles are now removed/commented out */
 
 #player-info {
   border: 2px solid #333;
   padding: 15px;
   width: 400px; /* Or a max-width and margin auto if not in flex */
   text-align: center;
-  background-color: #fff;
+  background-color: var(--player-info-bg);
+  border: 2px solid var(--container-border-color); /* Use variable */
   border-radius: 8px;
-  margin-bottom: 20px; /* Space below player info */
+  /* margin-bottom: 20px; /* Replaced by gap in #right-column */
+  width: 100%; /* Fill the width of #right-column */
 }
 
 #roll-die-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: #007bff; /* Bootstrap primary blue */
+  padding: 12px 20px; /* Slightly larger padding */
+  font-size: 18px; /* Larger font */
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Make button full width of right column */
+}
+
+#roll-die-button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+#event-log {
+  width: 100%; /* Fill the width of #right-column */
+  height: 150px; /* Increased height for more log visibility */
+  border: 1px solid var(--container-border-color); /* Use variable */
+  padding: 10px;
+  /* margin-top: 20px; /* Replaced by gap in #right-column */
+  background-color: var(--event-log-bg);
+  border-radius: 8px; /* Same as player-info */
+  overflow-y: auto; /* Enable vertical scrolling */
+  font-size: 14px; /* Readable font size for messages */
+  line-height: 1.4; /* Spacing for lines of text */
+  text-align: left; /* Align text to the left for readability */
+  color: var(--main-text-color); /* Ensure text color matches theme */
+}
+
+#theme-toggle-button {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000; /* Ensure it's above other elements */
+  padding: 8px 12px;
+  font-size: 1.5em; /* For emoji icon */
+  background-color: var(--toggle-button-bg);
+  color: var(--main-text-color);
+  border: 1px solid var(--toggle-button-border);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-#roll-die-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+#theme-toggle-button:hover {
+  background-color: var(--button-hover-bg-color); /* Use existing button hover from theme */
 }

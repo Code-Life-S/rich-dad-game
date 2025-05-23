@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Rich Dad Game</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button id="theme-toggle-button" aria-label="Toggle theme">🌙</button>
   <h1>Rich Dad Game</h1>
-  <div id="game-board">
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  <div id="game-container">
+    <div id="left-column">
+      <div id="game-board">
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+    </div>
+    <div id="right-column">
+      <div id="player-info"></div>
+      <button id="roll-die-button">Roll Die & Move</button>
+      <div id="event-log"></div>
+    </div>
   </div>
-  <div id="player-info"></div>
-  <button id="roll-die-button">Roll Die & Move</button>
   <script src="script.js"></script>
 </body>
 </html>
