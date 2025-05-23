@@ -1,32 +1,102 @@
+:root {
+  --main-bg-color: #222;
+  --main-text-color: #eee;
+  --container-bg-color: #333;
+  --container-border-color: #555;
+  --button-bg-color: #5C6BC0; /* Indigo */
+  --button-hover-bg-color: #3F51B5; /* Darker Indigo */
+  --button-text-color: #fff;
+  --link-color: #81D4FA; /* Light Blue */
+  --game-board-bg: #424242; /* Darker grey for board area */
+  --game-board-border-color: #666; /* Border for game board visual guide */
+  --player-info-bg: var(--container-bg-color);
+  --event-log-bg: var(--container-bg-color);
+  --tile-default-border: #757575;
+  --start-tile-border: gold;
+  --heading-color: var(--main-text-color);
+  --toggle-button-bg: var(--container-bg-color);
+  --toggle-button-border: var(--container-border-color);
+}
+
+body.light-mode {
+  --main-bg-color: #f4f4f4;
+  --main-text-color: #333;
+  --container-bg-color: #fff;
+  --container-border-color: #ccc;
+  --button-bg-color: #7986CB; /* Lighter Indigo */
+  --button-hover-bg-color: #5C6BC0; /* Indigo for hover in light mode */
+  --button-text-color: #fff;
+  --link-color: #0288D1; /* Darker Blue */
+  --game-board-bg: #e0e0e0; /* Lighter grey for board area */
+  --game-board-border-color: #bdbdbd;
+  --player-info-bg: var(--container-bg-color);
+  --event-log-bg: var(--container-bg-color);
+  --tile-default-border: #999;
+  --start-tile-border: darkgoldenrod;
+  --heading-color: var(--main-text-color);
+  --toggle-button-bg: #eee; /* Lighter background for toggle button in light mode */
+  --toggle-button-border: #ccc;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center children horizontally */
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   margin: 0;
-  padding-top: 20px; /* Add some space at the top */
-  background-color: #f0f0f0; /* Light grey background for the page */
+  padding: 20px; /* Add some padding to the body */
+  /* background-color: #f0f0f0; /* Replaced by var(--main-bg-color) */
+  display: flex; /* Keep flex to center the title and game-container vertically */
+  flex-direction: column;
+  align-items: center; /* Center title and game-container horizontally */
 }
 
 h1 {
   margin-bottom: 20px;
+  text-align: center; /* Ensure heading is centered */
+  color: var(--heading-color);
+}
+
+#game-container {
+  display: flex;
+  justify-content: center; /* Center columns if space available, or use space-around */
+  align-items: flex-start; /* Align columns to the top */
+  gap: 30px; /* Increased gap between columns */
+  width: 95%; /* Use more of the viewport */
+  max-width: 1100px; /* Max width for very large screens, adjusted from 1200 */
+  margin: 0 auto; /* Center #game-container if body is not flex centering it directly */
+}
+
+#left-column {
+  /* flex-basis: 620px; /* Game board is 600px + borders/padding */
+  /* Let it size based on game-board content for now */
+  display: flex; /* To center game-board if needed, though game-board has its own margin auto */
+  justify-content: center;
+}
+
+#right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Gap between items in the right column */
+  flex-basis: 350px; /* Give a base width to the right column */
+  min-width: 300px; /* Ensure it doesn't get too small */
 }
 
 #game-board {
   position: relative;
   width: 600px; /* Diameter for the circular layout */
   height: 600px; /* Diameter for the circular layout */
-  margin: 30px auto; /* Centering the board, added more margin */
+  /* margin: 30px auto; /* Removed as left-column can handle centering/spacing */
   border-radius: 50%; /* Visual guide for the circular area */
-  border: 2px dashed #ccc; /* Visual guide for the circular area */
+  border: 2px dashed var(--game-board-border-color); /* Use variable */
+  /* background-color: var(--game-board-bg); /* Optional: if board area itself needs a bg */
 }
 
 #game-board > div {
   position: absolute;
   width: 80px;  /* Tile width */
   height: 40px; /* Tile height */
-  background-color: #f0f0f0; /* Light background for tiles */
-  border: 1px solid #999;
+  /* background-color: #f0f0f0; /* Will be overridden by specific tile colors */
+  border: 1px solid var(--tile-default-border); /* Use variable */
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -37,10 +107,11 @@ h1 {
   left: calc(50% - 40px); /* 50% - (tile_width / 2) */
   top: calc(50% - 20px);  /* 50% - (tile_height / 2) */
   transform-origin: center center; /* Rotation origin for the tile itself */
-  color: #333; /* Default text color for tiles, if any text is added later */
+  color: var(--main-text-color); /* Themed text color for tile content (emojis) */
+  /* Tile background colors are set by specific rules below and are not themed */
 }
 
-/* Tile Background Colors */
+/* Tile Background Colors - these are fixed gameplay colors, not themed */
 /* Green Tiles: #8FBC8F */
 #game-board > div:nth-child(1),
 #game-board > div:nth-child(2),
@@ -87,11 +158,11 @@ h1 {
 
 /* Start Tile Marker */
 #game-board > div:nth-child(1) {
-  border: 3px solid gold; /* Prominent gold border for the start tile */
+  border: 3px solid var(--start-tile-border); /* Use variable */
   /* Ensure other properties like background-color, icon, and transform are not overridden unless intended */
 }
 
-/* Placeholder Icons (Emojis) */
+/* Placeholder Icons (Emojis) - Emoji colors are intrinsic, not themed by text color variable */
 #game-board > div::before {
   color: white;
   font-size: 18px; /* Adjusted for 40px tile height */
@@ -207,36 +278,59 @@ h1 {
   padding: 15px;
   width: 400px; /* Or a max-width and margin auto if not in flex */
   text-align: center;
-  background-color: #fff;
+  background-color: var(--player-info-bg);
+  border: 2px solid var(--container-border-color); /* Use variable */
   border-radius: 8px;
-  margin-bottom: 20px; /* Space below player info */
+  /* margin-bottom: 20px; /* Replaced by gap in #right-column */
+  width: 100%; /* Fill the width of #right-column */
 }
 
 #roll-die-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: #007bff; /* Bootstrap primary blue */
+  padding: 12px 20px; /* Slightly larger padding */
+  font-size: 18px; /* Larger font */
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%; /* Make button full width of right column */
 }
 
 #roll-die-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: var(--button-hover-bg-color);
 }
 
 #event-log {
-  width: 400px; /* Same as player-info */
-  height: 100px;
-  border: 1px solid #ccc;
+  width: 100%; /* Fill the width of #right-column */
+  height: 150px; /* Increased height for more log visibility */
+  border: 1px solid var(--container-border-color); /* Use variable */
   padding: 10px;
-  margin-top: 20px;
-  background-color: #fff; /* Same as player-info */
+  /* margin-top: 20px; /* Replaced by gap in #right-column */
+  background-color: var(--event-log-bg);
   border-radius: 8px; /* Same as player-info */
   overflow-y: auto; /* Enable vertical scrolling */
   font-size: 14px; /* Readable font size for messages */
   line-height: 1.4; /* Spacing for lines of text */
   text-align: left; /* Align text to the left for readability */
+  color: var(--main-text-color); /* Ensure text color matches theme */
+}
+
+#theme-toggle-button {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000; /* Ensure it's above other elements */
+  padding: 8px 12px;
+  font-size: 1.5em; /* For emoji icon */
+  background-color: var(--toggle-button-bg);
+  color: var(--main-text-color);
+  border: 1px solid var(--toggle-button-border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#theme-toggle-button:hover {
+  background-color: var(--button-hover-bg-color); /* Use existing button hover from theme */
 }

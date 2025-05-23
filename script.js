@@ -25,6 +25,19 @@ const cells = gameBoard.children; // Assuming game-board only contains cell divs
 const playerInfoDiv = document.getElementById('player-info');
 let eventLogDiv; // Will be assigned in DOMContentLoaded
 let rollDieButton; // Will be assigned in DOMContentLoaded
+let themeToggleButton; // Will be assigned in DOMContentLoaded
+
+// Function to apply theme
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+    if (themeToggleButton) themeToggleButton.textContent = '☀️'; // Sun icon
+  } else { // 'dark'
+    document.body.classList.remove('light-mode');
+    if (themeToggleButton) themeToggleButton.textContent = '🌙'; // Moon icon
+  }
+  localStorage.setItem('theme', theme);
+}
 
 // Function to log events
 function logEvent(message) {
@@ -174,11 +187,27 @@ function updatePlayerInfo() {
 // Initial setup
 document.addEventListener('DOMContentLoaded', () => {
   eventLogDiv = document.getElementById('event-log');
-  rollDieButton = document.getElementById('roll-die-button'); // Assign global button reference
+  rollDieButton = document.getElementById('roll-die-button'); 
+  themeToggleButton = document.getElementById('theme-toggle-button');
 
   if (rollDieButton) {
     rollDieButton.disabled = false; // Ensure button is enabled at start
   }
+
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', () => {
+      let currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+      if (currentTheme === 'light') {
+        applyTheme('dark');
+      } else {
+        applyTheme('light');
+      }
+    });
+  }
+
+  // Load saved theme or default to dark
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  applyTheme(savedTheme);
 
   // Create player icons
   player1Icon = document.createElement('div');
