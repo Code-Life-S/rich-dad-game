@@ -14,242 +14,189 @@ h1 {
 
 #game-board {
   position: relative;
-  width: 650px; /* 26 cells * 25px/cell */
-  height: 650px; /* 26 cells * 25px/cell */
-  margin-bottom: 20px; /* Space below the board */
-  /* border: 1px solid black; */ /* Optional: border for the container */
+  width: 600px; /* Diameter for the circular layout */
+  height: 600px; /* Diameter for the circular layout */
+  margin: 30px auto; /* Centering the board, added more margin */
+  border-radius: 50%; /* Visual guide for the circular area */
+  border: 2px dashed #ccc; /* Visual guide for the circular area */
 }
 
 #game-board > div {
   position: absolute;
-  width: 25px;  /* New cell size */
-  height: 25px; /* New cell size */
-  border: 1px solid #ccc; /* Light grey border for each cell */
-  box-sizing: border-box; /* So border doesn't add to the size */
+  width: 80px;  /* Tile width */
+  height: 40px; /* Tile height */
+  background-color: #f0f0f0; /* Light background for tiles */
+  border: 1px solid #999;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px; /* Smaller font for smaller cells */
+  font-size: 10px; /* Slightly larger font for new tile size */
+  
+  /* Center all tiles initially before applying individual transforms */
+  left: calc(50% - 40px); /* 50% - (tile_width / 2) */
+  top: calc(50% - 20px);  /* 50% - (tile_height / 2) */
+  transform-origin: center center; /* Rotation origin for the tile itself */
+  color: #333; /* Default text color for tiles, if any text is added later */
 }
 
-/* Top Row: Cells 1-26 (index 0-25) */
-/* nth-child is 1-indexed */
-/* cell k (0-indexed) is nth-child(k+1) */
-/* left: k*25px; top: 0px; */
-#game-board > div:nth-child(1) { top: 0px; left: 0px; }
-#game-board > div:nth-child(2) { top: 0px; left: 25px; }
-#game-board > div:nth-child(3) { top: 0px; left: 50px; }
-#game-board > div:nth-child(4) { top: 0px; left: 75px; }
-#game-board > div:nth-child(5) { top: 0px; left: 100px; }
-#game-board > div:nth-child(6) { top: 0px; left: 125px; }
-#game-board > div:nth-child(7) { top: 0px; left: 150px; }
-#game-board > div:nth-child(8) { top: 0px; left: 175px; }
-#game-board > div:nth-child(9) { top: 0px; left: 200px; }
-#game-board > div:nth-child(10) { top: 0px; left: 225px; }
-#game-board > div:nth-child(11) { top: 0px; left: 250px; }
-#game-board > div:nth-child(12) { top: 0px; left: 275px; }
-#game-board > div:nth-child(13) { top: 0px; left: 300px; }
-#game-board > div:nth-child(14) { top: 0px; left: 325px; }
-#game-board > div:nth-child(15) { top: 0px; left: 350px; }
-#game-board > div:nth-child(16) { top: 0px; left: 375px; }
-#game-board > div:nth-child(17) { top: 0px; left: 400px; }
-#game-board > div:nth-child(18) { top: 0px; left: 425px; }
-#game-board > div:nth-child(19) { top: 0px; left: 450px; }
-#game-board > div:nth-child(20) { top: 0px; left: 475px; }
-#game-board > div:nth-child(21) { top: 0px; left: 500px; }
-#game-board > div:nth-child(22) { top: 0px; left: 525px; }
-#game-board > div:nth-child(23) { top: 0px; left: 550px; }
-#game-board > div:nth-child(24) { top: 0px; left: 575px; }
-#game-board > div:nth-child(25) { top: 0px; left: 600px; }
-#game-board > div:nth-child(26) { top: 0px; left: 625px; } /* End of top row (0 to 25*25px = 625px) */
-
-/* Right Column: Cells 27-50 (index 0-23 for column part) */
-/* cell k (0-indexed in this segment) is nth-child(27+k) */
-/* top: (k+1)*25px; left: 625px (which is 25*25px) */
-#game-board > div:nth-child(27) { top: 25px; left: 625px; } /* k=0, top (0+1)*25 = 25 */
-#game-board > div:nth-child(28) { top: 50px; left: 625px; }
-#game-board > div:nth-child(29) { top: 75px; left: 625px; }
-#game-board > div:nth-child(30) { top: 100px; left: 625px; }
-#game-board > div:nth-child(31) { top: 125px; left: 625px; }
-#game-board > div:nth-child(32) { top: 150px; left: 625px; }
-#game-board > div:nth-child(33) { top: 175px; left: 625px; }
-#game-board > div:nth-child(34) { top: 200px; left: 625px; }
-#game-board > div:nth-child(35) { top: 225px; left: 625px; }
-#game-board > div:nth-child(36) { top: 250px; left: 625px; }
-#game-board > div:nth-child(37) { top: 275px; left: 625px; }
-#game-board > div:nth-child(38) { top: 300px; left: 625px; }
-#game-board > div:nth-child(39) { top: 325px; left: 625px; }
-#game-board > div:nth-child(40) { top: 350px; left: 625px; }
-#game-board > div:nth-child(41) { top: 375px; left: 625px; }
-#game-board > div:nth-child(42) { top: 400px; left: 625px; }
-#game-board > div:nth-child(43) { top: 425px; left: 625px; }
-#game-board > div:nth-child(44) { top: 450px; left: 625px; }
-#game-board > div:nth-child(45) { top: 475px; left: 625px; }
-#game-board > div:nth-child(46) { top: 500px; left: 625px; }
-#game-board > div:nth-child(47) { top: 525px; left: 625px; }
-#game-board > div:nth-child(48) { top: 550px; left: 625px; }
-#game-board > div:nth-child(49) { top: 575px; left: 625px; }
-#game-board > div:nth-child(50) { top: 600px; left: 625px; } /* End of right column. (23+1)*25 = 600px. Cell index 24 on this side. Total 25 cells. */
-/* Note: cell 26 is top-right. cell 50 is bottom-right (top: 24*25=600, left: 25*25=625). The cell at 625,625 is cell 26.
-The right column has 24 cells *underneath* cell 26. So cell 27 (index 26) is at top: 1*25, left: 25*25.
-Cell 50 (index 49) is at top: 24*25, left: 25*25. (top: 600px, left: 625px)
-This means cell 26 is (0, 625). Cell 27 is (25, 625) ... Cell 50 is (600, 625). This is 25 cells.
-Indices: Top row: 0-25 (26 cells). Right col: 26-49 (24 cells, not including top-right, but including bottom-right).
-The calculation for right column was: top: (k+1)*25px for k=0 to 23.
-Cell 26 (index 25) is at (0, 625).
-Cell 27 (index 26) should be at (25, 625). nth-child(27) -> k=0 for this segment. top: (0+1)*25 = 25. Correct.
-Cell 50 (index 49) should be at (24*25 + 25, 625) = (600+25, 625) NO.
-It should be: top: k_val*25px, left: (W-1)*25px.
-k_val from 1 to H-2 for side columns (exclusive of corners).
-Top Row: (0,0) to (0, W-1)*cellSize -> cell 0 to W-1
-Right Col: (1*cellSize, (W-1)*cellSize) to ((H-1)*cellSize, (W-1)*cellSize) -> cell W to W+(H-1)-1 = W+H-2
-Bottom Row: ((H-1)*cellSize, (W-2)*cellSize) to ((H-1)*cellSize, 0) -> cell W+H-1 to W+H-1 + (W-1)-1 = W+H+W-3 = 2W+H-3
-Let's re-evaluate the segments with 0-indexed cells (0-99)
-Number of cells on each side for a 26x26 board:
-Top: 26 cells (0 to 25)
-Right: 24 cells (26 to 49) - these are *between* top-right and bottom-right corners
-Bottom: 26 cells (50 to 75)
-Left: 24 cells (76 to 99) - these are *between* bottom-left and top-left corners
-
-Cell indices and positions:
-Cells 0-25 (26 cells): Top row. `nth-child(k+1)`
-  `top: 0px; left: k*25px;` for `k` from 0 to 25.
-  `div:nth-child(1)` (k=0): `left:0px`. `div:nth-child(26)` (k=25): `left:625px`. Correct.
-
-Cells 26-49 (24 cells): Right column (excluding top-right, excluding bottom-right for this calculation method).
-  These are cells with index `k` from 26 to 49.
-  The actual cell number in this segment is `s = k - 26`. `s` goes from 0 to 23.
-  `top: (s+1)*25px; left: 625px;`
-  `div:nth-child(27)` (k=26, s=0): `top: 25px; left: 625px;`. Correct.
-  `div:nth-child(50)` (k=49, s=23): `top: (23+1)*25 = 600px; left: 625px;`. Correct.
-
-Cells 50-75 (26 cells): Bottom row.
-  Index `k` from 50 to 75. Segment index `s = k - 50`. `s` from 0 to 25.
-  This row includes bottom-right and bottom-left corners.
-  `top: 625px; left: (25-s)*25px;` (moves from right to left)
-  `div:nth-child(51)` (k=50, s=0): `top: 625px; left: 25*25 = 625px;`. Correct (this is the bottom-right corner cell).
-  `div:nth-child(76)` (k=75, s=25): `top: 625px; left: (25-25)*25 = 0px;`. Correct (this is the bottom-left corner cell).
-
-Cells 76-99 (24 cells): Left column (excluding bottom-left, excluding top-left).
-  Index `k` from 76 to 99. Segment index `s = k - 76`. `s` from 0 to 23.
-  `top: (25-(s+1))*25px; left: 0px;` (moves from bottom to top)
-  `div:nth-child(77)` (k=76, s=0): `top: (25-1)*25 = 600px; left: 0px;`. Correct.
-  `div:nth-child(100)` (k=99, s=23): `top: (25-(23+1))*25 = (25-24)*25 = 25px; left: 0px;`. Correct.
-This covers all 100 cells (0-99) and they form a continuous square loop.
-The previous list of 26+24+26+24 was based on the idea that corners are not part of side segments.
-The new calculation 26 (top, includes TR) + 24 (right, TR to BR, exclusive of TR, inclusive of BR) + 26 (bottom, includes BL) + 24 (left, BL to TL, exclusive of BL, inclusive of TL) is also confusing.
-
-Let's use the cell indices directly:
-Cell 0: (0,0)
-Cell 25: (0, 25*25) = (0, 625) (Top Right)
-Cell 26: (25, 625) (One step down from TR)
-...
-Cell 25 + 24 = 49. Cell 49 is at (24*25, 625) = (600, 625). This is the cell just above Bottom Right.
-Cell 50: (25*25, 625) = (625, 625) (Bottom Right)
-...
-Cell 50+25 = 75. Cell 75 is at (625, 0) (Bottom Left)
-Cell 76: (24*25, 0) = (600, 0) (One step up from BL)
-...
-Cell 75+24 = 99. Cell 99 is at (1*25, 0) = (25,0). This is the cell just below Top Left.
-This forms the loop.
-*/
-
-/* Bottom Row: Cells 51-76 (index 0-25 for this segment) */
-/* cell k (0-indexed for this segment) is nth-child(51+k) */
-/* top: 625px (which is 25*25px); left: (25-k)*25px */
-#game-board > div:nth-child(51) { top: 625px; left: 625px; } /* k=0 */
-#game-board > div:nth-child(52) { top: 625px; left: 600px; }
-#game-board > div:nth-child(53) { top: 625px; left: 575px; }
-#game-board > div:nth-child(54) { top: 625px; left: 550px; }
-#game-board > div:nth-child(55) { top: 625px; left: 525px; }
-#game-board > div:nth-child(56) { top: 625px; left: 500px; }
-#game-board > div:nth-child(57) { top: 625px; left: 475px; }
-#game-board > div:nth-child(58) { top: 625px; left: 450px; }
-#game-board > div:nth-child(59) { top: 625px; left: 425px; }
-#game-board > div:nth-child(60) { top: 625px; left: 400px; }
-#game-board > div:nth-child(61) { top: 625px; left: 375px; }
-#game-board > div:nth-child(62) { top: 625px; left: 350px; }
-#game-board > div:nth-child(63) { top: 625px; left: 325px; }
-#game-board > div:nth-child(64) { top: 625px; left: 300px; }
-#game-board > div:nth-child(65) { top: 625px; left: 275px; }
-#game-board > div:nth-child(66) { top: 625px; left: 250px; }
-#game-board > div:nth-child(67) { top: 625px; left: 225px; }
-#game-board > div:nth-child(68) { top: 625px; left: 200px; }
-#game-board > div:nth-child(69) { top: 625px; left: 175px; }
-#game-board > div:nth-child(70) { top: 625px; left: 150px; }
-#game-board > div:nth-child(71) { top: 625px; left: 125px; }
-#game-board > div:nth-child(72) { top: 625px; left: 100px; }
-#game-board > div:nth-child(73) { top: 625px; left: 75px; }
-#game-board > div:nth-child(74) { top: 625px; left: 50px; }
-#game-board > div:nth-child(75) { top: 625px; left: 25px; }
-#game-board > div:nth-child(76) { top: 625px; left: 0px; } /* End of bottom row (k=25) */
-
-/* Left Column: Cells 77-100 (index 0-23 for this segment) */
-/* cell k (0-indexed for this segment) is nth-child(77+k) */
-/* top: (25-(k+1))*25px; left: 0px */
-/* (25-1)*25 = 600px down to (25-24)*25 = 25px */
-#game-board > div:nth-child(77) { top: 600px; left: 0px; } /* k=0, top: (25-1)*25 = 600px */
-#game-board > div:nth-child(78) { top: 575px; left: 0px; }
-#game-board > div:nth-child(79) { top: 550px; left: 0px; }
-#game-board > div:nth-child(80) { top: 525px; left: 0px; }
-#game-board > div:nth-child(81) { top: 500px; left: 0px; }
-#game-board > div:nth-child(82) { top: 475px; left: 0px; }
-#game-board > div:nth-child(83) { top: 450px; left: 0px; }
-#game-board > div:nth-child(84) { top: 425px; left: 0px; }
-#game-board > div:nth-child(85) { top: 400px; left: 0px; }
-#game-board > div:nth-child(86) { top: 375px; left: 0px; }
-#game-board > div:nth-child(87) { top: 350px; left: 0px; }
-#game-board > div:nth-child(88) { top: 325px; left: 0px; }
-#game-board > div:nth-child(89) { top: 300px; left: 0px; }
-#game-board > div:nth-child(90) { top: 275px; left: 0px; }
-#game-board > div:nth-child(91) { top: 250px; left: 0px; }
-#game-board > div:nth-child(92) { top: 225px; left: 0px; }
-#game-board > div:nth-child(93) { top: 200px; left: 0px; }
-#game-board > div:nth-child(94) { top: 175px; left: 0px; }
-#game-board > div:nth-child(95) { top: 150px; left: 0px; }
-#game-board > div:nth-child(96) { top: 125px; left: 0px; }
-#game-board > div:nth-child(97) { top: 100px; left: 0px; }
-#game-board > div:nth-child(98) { top: 75px; left: 0px; }
-#game-board > div:nth-child(99) { top: 50px; left: 0px; }
-#game-board > div:nth-child(100) { top: 25px; left: 0px; } /* k=23, top: (25-24)*25 = 25px */
-/* End of left column. Cell 0 is at (0,0). This cell (cell 99) is at (25,0) i.e. just below cell 0. */
-/* This layout forms a continuous path. */
-
-/* Apply pastel colors in a repeating pattern */
-/* These are the base colors for the cells */
-#game-board > div:nth-child(5n+1) {
-  background-color: #A2D9A1; /* Pastel Green */
+/* Tile Background Colors */
+/* Green Tiles: #8FBC8F */
+#game-board > div:nth-child(1),
+#game-board > div:nth-child(2),
+#game-board > div:nth-child(6),
+#game-board > div:nth-child(7),
+#game-board > div:nth-child(11),
+#game-board > div:nth-child(12),
+#game-board > div:nth-child(16),
+#game-board > div:nth-child(17),
+#game-board > div:nth-child(21),
+#game-board > div:nth-child(22),
+#game-board > div:nth-child(23),
+#game-board > div:nth-child(24) {
+  background-color: #8FBC8F; 
 }
-#game-board > div:nth-child(5n+2) {
-  background-color: #A1C1D9; /* Pastel Blue */
+
+/* Orange Tiles: #FFA500 */
+#game-board > div:nth-child(3),
+#game-board > div:nth-child(8),
+#game-board > div:nth-child(13),
+#game-board > div:nth-child(18) {
+  background-color: #FFA500;
 }
-#game-board > div:nth-child(5n+3) {
-  background-color: #FAD9A1; /* Pastel Orange */
+
+/* Purple Tiles: #9370DB */
+#game-board > div:nth-child(4),
+#game-board > div:nth-child(9),
+#game-board > div:nth-child(14),
+#game-board > div:nth-child(19) {
+  background-color: #9370DB;
 }
-#game-board > div:nth-child(5n+4) {
-  background-color: #D9A1A1; /* Pastel Red */
+
+/* Blue Tiles: #ADD8E6 */
+#game-board > div:nth-child(5),
+#game-board > div:nth-child(10),
+#game-board > div:nth-child(15) {
+  background-color: #ADD8E6;
 }
-#game-board > div:nth-child(5n) { /* or 5n+0 */
-  background-color: #C1A1D9; /* Pastel Purple */
+
+/* Red Tile: #DC143C */
+#game-board > div:nth-child(20) {
+  background-color: #DC143C;
 }
+
+/* Start Tile Marker */
+#game-board > div:nth-child(1) {
+  border: 3px solid gold; /* Prominent gold border for the start tile */
+  /* Ensure other properties like background-color, icon, and transform are not overridden unless intended */
+}
+
+/* Placeholder Icons (Emojis) */
+#game-board > div::before {
+  color: white;
+  font-size: 18px; /* Adjusted for 40px tile height */
+  /* Centering should be handled by the tile's flex properties */
+}
+
+/* Green Tiles: 🤝 */
+#game-board > div:nth-child(1)::before,
+#game-board > div:nth-child(2)::before,
+#game-board > div:nth-child(6)::before,
+#game-board > div:nth-child(7)::before,
+#game-board > div:nth-child(11)::before,
+#game-board > div:nth-child(12)::before,
+#game-board > div:nth-child(16)::before,
+#game-board > div:nth-child(17)::before,
+#game-board > div:nth-child(21)::before,
+#game-board > div:nth-child(22)::before,
+#game-board > div:nth-child(23)::before,
+#game-board > div:nth-child(24)::before {
+  content: "🤝";
+}
+
+/* Orange Tiles: 👥 */
+#game-board > div:nth-child(3)::before,
+#game-board > div:nth-child(8)::before,
+#game-board > div:nth-child(13)::before,
+#game-board > div:nth-child(18)::before {
+  content: "👥";
+}
+
+/* Purple Tiles: ⚖️ */
+#game-board > div:nth-child(4)::before,
+#game-board > div:nth-child(9)::before,
+#game-board > div:nth-child(14)::before,
+#game-board > div:nth-child(19)::before {
+  content: "⚖️";
+}
+
+/* Blue Tiles: 💰 */
+#game-board > div:nth-child(5)::before,
+#game-board > div:nth-child(10)::before,
+#game-board > div:nth-child(15)::before {
+  content: "💰";
+}
+
+/* Red Tile: 🚩 */
+#game-board > div:nth-child(20)::before {
+  content: "🚩";
+}
+
+
+/* Positioning for 24 tiles in a circle */
+/* Angle per tile: 360 / 24 = 15 degrees */
+/* Radius: 260px (to the center of the tile's height) */
+/* Final rotation: -90deg to make the 80px width tangent */
+
+#game-board > div:nth-child(1) { transform: rotate(0deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(2) { transform: rotate(15deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(3) { transform: rotate(30deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(4) { transform: rotate(45deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(5) { transform: rotate(60deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(6) { transform: rotate(75deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(7) { transform: rotate(90deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(8) { transform: rotate(105deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(9) { transform: rotate(120deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(10) { transform: rotate(135deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(11) { transform: rotate(150deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(12) { transform: rotate(165deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(13) { transform: rotate(180deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(14) { transform: rotate(195deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(15) { transform: rotate(210deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(16) { transform: rotate(225deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(17) { transform: rotate(240deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(18) { transform: rotate(255deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(19) { transform: rotate(270deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(20) { transform: rotate(285deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(21) { transform: rotate(300deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(22) { transform: rotate(315deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(23) { transform: rotate(330deg) translateY(-260px) rotate(-90deg); }
+#game-board > div:nth-child(24) { transform: rotate(345deg) translateY(-260px) rotate(-90deg); }
+
 
 /* Player Icon Styles */
 .player-icon {
-  width: 10px;  /* Made smaller to fit two icons in a cell */
-  height: 10px; /* Made smaller to fit two icons in a cell */
-  border-radius: 50%;
-  border: 1px solid black;
-  /* position: absolute; /* Removed to allow cell's flexbox to center it */
-  z-index: 10; 
-  flex-shrink: 0; /* Prevent icons from shrinking if cell space is tight */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%; /* Ensures circular shape */
+  border: 1px solid #333; /* Dark border for visibility */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; /* Default color for icon text (emojis are often colorized by default) */
+  font-size: 16px; /* Adjust for emoji size */
+  z-index: 10; /* Ensure pawns are above tiles */
+  /* position: absolute; /* Pawns are children of cells, cells are flex containers. No absolute needed here. */
+  /* flex-shrink: 0; /* Removed, as it was for older smaller icons */
+  box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Optional: subtle shadow for depth */
 }
 
 .p1-icon {
-  background-color: #FF0000; /* Strong Red */
+  background-color: #A040C0; /* Vibrant Purple */
 }
 
 .p2-icon {
-  background-color: #0000FF; /* Strong Blue */
+  background-color: #4682B4; /* Steel Blue */
 }
 
 /* Remove old cell-based player highlighting */

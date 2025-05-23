@@ -1,11 +1,8 @@
-// Constants for Actions & Money
-const PAYCHECK_AMOUNT = 500;
-const LUCKY_EVENT_AMOUNT = 200;
-const EXPENSE_AMOUNT = 100;
-const TAX_AMOUNT = 150;
+// Constants for Game Logic
 const STARTING_MONEY = 5000;
-const WINNING_AMOUNT = 100000;
+const WINNING_AMOUNT = 100000; // This might need adjustment later for a shorter game
 const LOSING_THRESHOLD = 0;
+const TOTAL_CELLS = 24; // New constant for total cells
 
 // Player positions
 let player1Position = 0;
@@ -55,11 +52,11 @@ function movePlayer(player, roll) {
   let iconToMove;
 
   if (player === 1) {
-    player1Position = (player1Position + roll) % 100; // Wrap around
+    player1Position = (player1Position + roll) % TOTAL_CELLS; // Use TOTAL_CELLS
     targetPosition = player1Position;
     iconToMove = player1Icon;
   } else { // Player 2
-    player2Position = (player2Position + roll) % 100; // Wrap around
+    player2Position = (player2Position + roll) % TOTAL_CELLS; // Use TOTAL_CELLS
     targetPosition = player2Position;
     iconToMove = player2Icon;
   }
@@ -69,39 +66,73 @@ function movePlayer(player, roll) {
   }
 }
 
+// Helper function to get tile type based on cell index
+function getTileType(cellIndex) {
+  const greenTiles = [0, 1, 5, 6, 10, 11, 15, 16, 20, 21, 22, 23];
+  const orangeTiles = [2, 7, 12, 17];
+  const purpleTiles = [3, 8, 13, 18];
+  const blueTiles = [4, 9, 14];
+  const redTiles = [19]; // Corrected to be an array
+
+  if (greenTiles.includes(cellIndex)) return "green";
+  if (orangeTiles.includes(cellIndex)) return "orange";
+  if (purpleTiles.includes(cellIndex)) return "purple";
+  if (blueTiles.includes(cellIndex)) return "blue";
+  if (redTiles.includes(cellIndex)) return "red";
+  
+  console.warn(`Unknown tile type for cellIndex: ${cellIndex}`); // Log a warning
+  return "unknown"; 
+}
+
 // Function to handle cell actions
 function handleCellAction(player, cellIndex) {
-  const actionType = cellIndex % 5;
-  let message = `Player ${player} landed on cell ${cellIndex}. `;
+  const tileType = getTileType(cellIndex);
+  let eventMessage = `Player ${player} landed on cell ${cellIndex} (${tileType}). `;
 
-  switch (actionType) {
-    case 0: // Green: Paycheck
-      if (player === 1) player1Money += PAYCHECK_AMOUNT;
-      else player2Money += PAYCHECK_AMOUNT;
-      message += `It's a Paycheck! +$${PAYCHECK_AMOUNT}.`;
+  switch (tileType) {
+    case "green":
+      const greenTileMoney = 100;
+      if (player === 1) {
+        player1Money += greenTileMoney;
+      } else {
+        player2Money += greenTileMoney;
+      }
+      eventMessage += `Gained $${greenTileMoney} for cooperation.`;
       break;
-    case 1: // Blue: Investment
-      message += `It's an Investment Opportunity. (No change in money yet).`;
+    case "orange":
+      eventMessage += `An event occurs! (Details TBD)`;
       break;
-    case 2: // Orange: Lucky Event
-      if (player === 1) player1Money += LUCKY_EVENT_AMOUNT;
-      else player2Money += LUCKY_EVENT_AMOUNT;
-      message += `Lucky Event! +$${LUCKY_EVENT_AMOUNT}.`;
+    case "purple":
+      eventMessage += `Faced with a dilemma! (Details TBD)`;
       break;
-    case 3: // Red: Expense
-      if (player === 1) player1Money -= EXPENSE_AMOUNT;
-      else player2Money -= EXPENSE_AMOUNT;
-      message += `Oh no, an Expense! -$${EXPENSE_AMOUNT}.`;
+    case "blue":
+      const blueTileMoney = 250;
+      const gainMoney = Math.random() < 0.5; // 50% chance
+      if (gainMoney) {
+        if (player === 1) {
+          player1Money += blueTileMoney;
+        } else {
+          player2Money += blueTileMoney;
+        }
+        eventMessage += `Financial luck! Gained $${blueTileMoney}.`;
+      } else {
+        if (player === 1) {
+          player1Money -= blueTileMoney;
+        } else {
+          player2Money -= blueTileMoney;
+        }
+        eventMessage += `Financial setback! Lost $${blueTileMoney}.`;
+      }
       break;
-    case 4: // Purple: Tax
-      if (player === 1) player1Money -= TAX_AMOUNT;
-      else player2Money -= TAX_AMOUNT;
-      message += `Tax time! -$${TAX_AMOUNT}.`;
+    case "red":
+      eventMessage += `A special challenge! (Details TBD)`;
       break;
-    default:
-      message += `No special action.`;
+    default: // Should not be reached if getTileType is correct
+      eventMessage += `Unknown tile type. No action.`;
+      console.warn(`Unhandled tile type: ${tileType} for cellIndex: ${cellIndex}`);
+      break;
   }
-  logEvent(message);
+  logEvent(eventMessage);
 }
 
 // Function to switch turns
@@ -153,10 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
   player1Icon = document.createElement('div');
   player1Icon.id = 'player1-icon';
   player1Icon.classList.add('player-icon', 'p1-icon');
+  player1Icon.textContent = "🚁"; // Player 1 emoji
 
   player2Icon = document.createElement('div');
   player2Icon.id = 'player2-icon';
   player2Icon.classList.add('player-icon', 'p2-icon');
+  player2Icon.textContent = "🏎️"; // Player 2 emoji
 
   // Place icons at the start
   if (cells[player1Position]) {
@@ -174,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (rollDieButton) { // This now correctly refers to the global rollDieButton, assigned on line 143.
     rollDieButton.addEventListener('click', () => {
       const roll = rollDie();
-      // const currentPositionBeforeMove = currentPlayer === 1 ? player1Position : player2Position; // Not strictly needed now
       
       movePlayer(currentPlayer, roll); // This updates playerXPosition
 
